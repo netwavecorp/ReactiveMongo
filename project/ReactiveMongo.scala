@@ -2,7 +2,10 @@ import sbt._
 import sbt.Keys._
 
 object BuildSettings {
-  val buildVersion = "0.9"
+  object V {
+    val build = "0.9"
+    val scala = "2.10.2"
+  }
 
   val filter = { (ms: Seq[(File, String)]) =>
     ms filter {
@@ -13,10 +16,8 @@ object BuildSettings {
 
   val buildSettings = Defaults.defaultSettings ++ Seq(
     organization := "org.reactivemongo",
-    version := buildVersion,
-    scalaVersion := "2.10.0",
-    crossScalaVersions := Seq("2.10.0"),
-    crossVersion := CrossVersion.binary,
+    version := V.build,
+    scalaVersion := V.scala,
     javaOptions in test ++= Seq("-Xmx512m", "-XX:MaxPermSize=512m"),
     scalacOptions ++= Seq("-unchecked", "-deprecation" /*, "-Xlog-implicits", "-Yinfer-debug", "-Xprint:typer", "-Yinfer-debug", "-Xlog-implicits", "-Xprint:typer"*/ ),
     scalacOptions in (Compile, doc) ++= Seq("-unchecked", "-deprecation", "-diagrams", "-implicits"),
@@ -111,7 +112,7 @@ object ShellPrompt {
       {
         val currProject = Project.extract(state).currentProject.id
         "%s:%s:%s> ".format(
-          currProject, currBranch, BuildSettings.buildVersion)
+          currProject, currBranch, BuildSettings.V.build)
       }
   }
 }
@@ -143,10 +144,11 @@ object Dependencies {
     "ch.qos.logback" % "logback-core" % logbackVer,
     "ch.qos.logback" % "logback-classic" % logbackVer)
 
-  def specs(sv: String) = sv match {
-    case "2.10.0" => "org.specs2" % "specs2" % "1.14" % "test" cross CrossVersion.binary
-    case "2.10.1" => "org.specs2" % "specs2" % "1.14" % "test" cross CrossVersion.binary
-  }
+  def specs(sv: String) = "org.specs2" % "specs2" % "1.14" % "test" cross CrossVersion.binary
+//    sv match {
+//      case "2.10.0" => "org.specs2" % "specs2" % "1.14" % "test" cross CrossVersion.binary
+//      case "2.10.1" => "org.specs2" % "specs2" % "1.14" % "test" cross CrossVersion.binary
+//    }
 
   val junit = "junit" % "junit" % "4.8" % "test" cross CrossVersion.Disabled
   val testDeps = Seq(junit)
@@ -184,7 +186,7 @@ object ReactiveMongoBuild extends Build {
     "ReactiveMongo-BSON-Macros",
     file("macros"),
     settings = buildSettings ++ Seq(
-      libraryDependencies <+= (scalaVersion)("org.scala-lang" % "scala-compiler" % _)
+      libraryDependencies += "org.scala-lang" % "scala-compiler" % V.scala
     )) dependsOn (bson)
 }
 

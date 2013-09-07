@@ -125,7 +125,7 @@ object Resolvers {
 }
 
 object Dependencies {
-  val netty = "io.netty" % "netty" % "3.6.5.Final" cross CrossVersion.Disabled
+  val netty = "io.netty" % "netty" % "3.6.6.Final" cross CrossVersion.Disabled
 
   def akkaActor(sv: String) = "com.typesafe.akka" %% "akka-actor" % "2.2.0"
 //    sv match {
@@ -133,7 +133,7 @@ object Dependencies {
 //      case "2.10.1" => "com.typesafe.akka" %% "akka-actor" % "2.1.2"
 //    }
 
-  def iteratees(sv: String) = "com.typesafe.play" %% "play-iteratees" % "2.2.0-RC1"
+  def iteratees(sv: String) = "com.typesafe.play" %% "play-iteratees" % "2.2.0-M3" exclude("org.scala-sbt", "sbt") exclude("com.typesafe.sbt", "sbt-pgp")
 //    sv match {
 //      case "2.10.0" => "play" %% "play-iteratees" % "2.1.0"
 //      case "2.10.1" => "play" %% "play-iteratees" % "2.1.1"

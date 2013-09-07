@@ -4,7 +4,7 @@ name := "ReactiveMongo-BSON-Macros"
 
 version := "0.9"
 
-scalaVersion := "2.10.0"
+scalaVersion := "2.10.2"
 
 scalacOptions ++= Seq("-unchecked", "-deprecation")
 

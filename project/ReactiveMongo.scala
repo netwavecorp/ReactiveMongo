@@ -125,7 +125,7 @@ object Resolvers {
 }
 
 object Dependencies {
-  val netty = "io.netty" % "netty" % "3.6.5.Final" cross CrossVersion.Disabled
+  val netty = "io.netty" % "netty" % "3.6.6.Final" cross CrossVersion.Disabled
 
   def akkaActor(sv: String) = "com.typesafe.akka" %% "akka-actor" % "2.2.0"
 //    sv match {
@@ -150,7 +150,7 @@ object Dependencies {
 //      case "2.10.1" => "org.specs2" % "specs2" % "1.14" % "test" cross CrossVersion.binary
 //    }
 
-  val junit = "junit" % "junit" % "4.8" % "test" cross CrossVersion.Disabled
+  val junit = "junit" % "junit" % "4.11" % "test" cross CrossVersion.Disabled
   val testDeps = Seq(junit)
 }
 

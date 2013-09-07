@@ -22,7 +22,7 @@ import scala.util.{ Failure, Success }
 
 object CustomEnumeratee {
   object TakeTo {
-    def apply[E](p: E => Boolean): Enumeratee[E, E] = new TakeTo(p)
+    def apply[E](p: E => Boolean)(implicit ec: ExecutionContext): Enumeratee[E, E] = new TakeTo(p)(ec)
   }
 
   /**
@@ -30,7 +30,7 @@ object CustomEnumeratee {
    *
    * More formally, takes all the elements while the predicate is valid and the first for which the predicate returns false.
    */
-  class TakeTo[E](p: E => Boolean) extends Enumeratee[E, E] {
+  class TakeTo[E](p: E => Boolean)(implicit ec: ExecutionContext) extends Enumeratee[E, E] {
     def step[A](k: K[E, A]): K[E, Iteratee[E, A]] = {
       case in @ Input.El(e) =>
         new CheckDone[E, E] {
@@ -51,7 +51,7 @@ object CustomEnumeratee {
     def continue[A](k: K[E, A]) = Cont(step(k))
 
     override def applyOn[A](it: Iteratee[E, A]): Iteratee[E, Iteratee[E, A]] =
-      it.pureFlatFold {
+      it.pureFlatFold[E, Iteratee[E, A]] {
         case Step.Cont(k) => continue(k)
         case _            => Done(it, Input.Empty)
       }
